@@ -92,7 +92,7 @@ if Range(end)~=Ticks(end)
   Ticks = fliplr(Range(end):-dX:Range(1));
   set(hAxes,'XTick',Ticks)
 end
-set(hAxes,'XTickLabel',[],'XTickMode','Manual','XGrid','On','YGrid','On')
+set(hAxes,'XTickLabel',[],'XTickMode','Manual','XGrid','Off','YGrid','Off')
 
 % label X axis with units/division
 xlabel(sprintf('%g %s/div',dX,xUnits))
