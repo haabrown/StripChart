@@ -84,7 +84,7 @@ TMin = -55;
  % Opening the Logging Methods
  
  DateString = datestr(datetime('now'),'mmddyyyyHHMMSS');
- filename = ['HouseKeepingLog' DateString '.log')
+ filename = ['HouseKeepingLog' DateString '.log']
  %dlmwrite(filename,data) - Demo of how to use the log file in the program
  
  % Running the main loop
