@@ -13,11 +13,34 @@ AMax = 4;
 AMin = 0;
 TMax = 200;
 TMin = -55;
+ 
+ % Query for the Number of Seconds Per Read and the total strip time
+ 
+ continuer2 = 1;
+ while continuer2
+    str = str2double(input('Enter the time between packets (nearest whole second): ','s'));
+    if isnan(str) || fix(str) ~= str
+        continue;
+    else
+        continuer2 = 0;
+    end
+ end
+ 
+ continuer2 = 1;
+ while continuer2
+    str2 = str2double(input('Enter the total strip time (nearest whole second): ','s'));
+    if isnan(str2) || fix(str2) ~= str2
+        continue;
+    else
+        continuer2 = 0;
+    end
+ end
+ 
+ % The arrays needed to 'prime' the plot
 
-% The arrays needed to 'prime' the plot
-
- x = 1:1000;
- x2 = ones(1000,1);
+ maxStripVal = floor(str2/str);
+ x = 1:maxStripVal;
+ x2 = 0*ones(maxStripVal,1);
  
  % Setting up the initial plots with the limits hidden
  
@@ -53,14 +76,20 @@ TMin = -55;
  
  % Adding the stop button
  
- pos = get(gcf,'pos')
- C = uicontrol('String','Stop','Callback','continuer = 0');
- C.Position = [(pos(3)/2)-30 10 60 20];
- C.Position
+ pos = get(gcf,'pos');
+ C = uicontrol('String','Stop','Callback','continuer = 0;');
+ C.Position = [(pos(3)/2)-20 10 60 20];
+ C.Position;
+ 
+ % Opening the Logging Methods
+ 
+ DateString = datestr(datetime('now'),'mmddyyyyHHMMSS');
+ filename = ['HouseKeepingLog' DateString '.log')
+ %dlmwrite(filename,data) - Demo of how to use the log file in the program
  
  % Running the main loop
  
- StripChart('Initialize',gca,'Time (s)')
+ StripChart('Initialize',gca,'Packets')
  %set(gcf, 'Position', get(0,'Screensize'));
  while(continuer)
     z = sin(2*pi*i/1000)+2;
@@ -75,6 +104,8 @@ TMin = -55;
     StripChart('Update',TILine,TMin);
     StripChart('Update',hLine3,20*z)
     StripChart('Update',hLine4,20*z2)
+    pos = get(gcf,'pos');
+    C.Position = [(pos(3)/2)-20 10 60 20];
     drawnow
     i = i+1;
  end
