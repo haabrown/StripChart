@@ -1,40 +1,60 @@
 % Strip Chart first Written Test
 
-% Use dlmwrite to create a CSV where the reading are logged as we plot.
+% Be aware that this code is currently not backwards compatible past 2014b
 
 close all;
 clear all;
 
 % Given constant limits
 
-VMax = 10;
-VMin = 0;
-AMax = 4;
-AMin = 0;
-TMax = 200;
-TMin = -55;
- 
- % Query for the Number of Seconds Per Read and the total strip time
- 
- continuer2 = 1;
- while continuer2
-    str = str2double(input('Enter the time between packets (nearest whole second): ','s'));
-    if isnan(str) || fix(str) ~= str
-        continue;
-    else
-        continuer2 = 0;
+%VMax = 10;
+%VMin = 0;
+%AMax = 4;
+%AMin = 0;
+%TMax = 200;
+%TMin = -55;
+iniSize = 8;
+
+% Read in the .ini file
+
+filename = 'QB50.ini';
+Initializations = importdata(filename);
+textIni = Initializations.textdata();
+dataIni = Initializations.data();
+Inputs = length(textIni);
+if Inputs ~= iniSize
+    error('Invalid .ini file, consult the documentation to make sure you have 8 fields.');
+    return
+end
+
+% Parse the .ini file
+
+for i = 1:8
+    n = textIni{i};
+    curdat = dataIni(i);
+    switch n
+        case 'VMax'
+            VMax = curdat;
+        case 'VMin'
+            VMin = curdat;
+        case 'AMax'
+            AMax = curdat;
+        case 'AMin'
+            AMin = curdat;
+        case 'TMax'
+            TMax = curdat;
+        case 'TMin'
+            TMin = curdat;
+        case 'PacketTime'
+            str = curdat;
+        case 'MaxPackets'
+            str2 = curdat;
+        otherwise
+            n
+            Error('Above .ini field is not valid at this time.')
+            return
     end
- end
- 
- continuer2 = 1;
- while continuer2
-    str2 = str2double(input('Enter the total strip time (nearest whole second): ','s'));
-    if isnan(str2) || fix(str2) ~= str2
-        continue;
-    else
-        continuer2 = 0;
-    end
- end
+end
  
  % The arrays needed to 'prime' the plot
 
@@ -79,12 +99,11 @@ TMin = -55;
  pos = get(gcf,'pos');
  C = uicontrol('String','Stop','Callback','continuer = 0;');
  C.Position = [(pos(3)/2)-20 10 60 20];
- C.Position;
  
  % Opening the Logging Methods
  
- DateString = datestr(datetime('now'),'mmddyyyyHHMMSS');
- filename = ['HouseKeepingLog' DateString '.log']
+ %DateString = datestr(datetime('now'),'mmddyyyyHHMMSS');
+ %filename = ['HouseKeepingLog' DateString '.log']
  %dlmwrite(filename,data) - Demo of how to use the log file in the program
  
  % Running the main loop
