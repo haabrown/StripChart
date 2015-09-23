@@ -17,7 +17,7 @@ iniSize = 8;
 
 % Read in the .ini file
 
-filename = 'QB50.ini';
+filename = 'QB50.ini'; % default .ini file
 Initializations = importdata(filename);
 textIni = Initializations.textdata();
 dataIni = Initializations.data();
@@ -64,6 +64,7 @@ end
  
  % Setting up the initial plots with the limits hidden
  
+ figure1 = figure;
  subplot(3,1,1);
  hold on;
  VXLine = plot(x,x2*VMax,'w');
@@ -88,6 +89,13 @@ end
  hLine4 = plot(x,x2*TMin);
  title('Temperature')
  ylabel('Temperature (C)')
+ 
+ % Setting up the data tables
+ 
+ figure2 = figure('Position', [100 100 752 250]);
+ t = uitable('Parent',figure2,'Position', [25 50 700 200]);
+ 
+ figure(figure1); % pass focus back to the main strip charts for now
  
  % Setting up for the loop
  
@@ -118,7 +126,7 @@ end
     StripChart('Update',hLine,z)
     StripChart('Update',AXLine,AMax);
     StripChart('Update',AILine,AMin);
-    StripChart('Update',hLine2,z2)
+    StripChart('Update',hLine2,z2+5)
     StripChart('Update',TXLine,TMax);
     StripChart('Update',TILine,TMin);
     StripChart('Update',hLine3,20*z)
