@@ -69,7 +69,18 @@ end
  hold on;
  VXLine = plot(x,x2*VMax,'w');
  VILine = plot(x,x2*VMin,'w');
- hLine = plot(x,x2*VMin);
+ hLine = plot(x,x2*VMin); % EPS 8V4 Voltage
+ hLine2 = plot(x,x2*VMin); % EPS 5V Voltage
+ hLine3 = plot(x,x2*VMin); % EPS 3V3 Voltage
+ hLine4 = plot(x,x2*VMin); % PV1 Voltage
+ hLine5 = plot(x,x2*VMin); % PV2 Voltage
+ hLine6 = plot(x,x2*VMin); % Battery Voltage
+ hLine7 = plot(x,x2*VMin); % Fuel Gauge VCELL
+ hLine8 = plot(x,x2*VMin); % CDH 5V Voltage
+ hLine9 = plot(x,x2*VMin); % CDH Battery Voltage
+ hLine10 = plot(x,x2*VMin); % INMS 5V Voltage
+ hLine11 = plot(x,x2*VMin); % INMS 3V5 Voltage
+ hLine12 = plot(x,x2*VMin); % INMS TH Voltage
  set(gca,'XTick',[]);
  title('Voltage')
  ylabel('Voltage (V)')
@@ -77,7 +88,16 @@ end
  hold on;
  AXLine = plot(x,x2*AMax,'w');
  AILine = plot(x,x2*AMin,'w');
- hLine2 = plot(x,x2*AMin);
+ hLine13 = plot(x,x2*AMin); % EPS 8V4 Current
+ hLine14 = plot(x,x2*AMin); % EPS 5V Current
+ hLine15 = plot(x,x2*AMin); % EPS 3V3 Current
+ hLine16 = plot(x,x2*AMin); % PV1 Current
+ hLine17 = plot(x,x2*AMin); % PV2 Current
+ hLine18 = plot(x,x2*AMin); % Battery IC
+ hLine19 = plot(x,x2*AMin); % Battery ID
+ hLine20 = plot(x,x2*AMin); % INMS 5V Current
+ hLine21 = plot(x,x2*AMin); % INMS 3V5 Current
+ hLine22 = plot(x,x2*AMin); % INMS TH Current
  set(gca,'XTick',[]);
  title('Current')
  ylabel('Current (A)')
@@ -85,8 +105,15 @@ end
  hold on;
  TXLine = plot(x,x2*TMax,'w');
  TILine = plot(x,x2*TMin,'w');
- hLine3 = plot(x,x2*TMin);
- hLine4 = plot(x,x2*TMin);
+ hLine23 = plot(x,x2*TMin); % Battery T1
+ hLine24 = plot(x,x2*TMin); % Battery T2
+ hLine25 = plot(x,x2*TMin); % T3
+ hLine26 = plot(x,x2*TMin); % T1
+ hLine27 = plot(x,x2*TMin); % T2
+ hLine28 = plot(x,x2*TMin); % 8.5 V Board Temperature
+ hLine29 = plot(x,x2*TMin); % 3V5/5V Board Temperature
+ hLine30 = plot(x,x2*TMin); % CDH Temperature
+ hLine31 = plot(x,x2*TMin); % Com Temperature
  title('Temperature')
  ylabel('Temperature (C)')
  
