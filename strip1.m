@@ -29,7 +29,7 @@ end
 
 % Parse the .ini file
 
-for i = 1:8
+for i = 1:iniSize
     n = textIni{i};
     curdat = dataIni(i);
     switch n
@@ -120,7 +120,11 @@ end
  % Setting up the data tables
  
  figure2 = figure('Position', [100 100 752 250]);
- t = uitable('Parent',figure2,'Position', [25 50 700 200]);
+ columnname = {'Hardware Label', 'Value'};
+ d = {'EPS 8V4 Voltage' 0}; 
+ t = uitable('Parent',figure2,'Position', [25 50 700 200], ...
+    'ColumnName',columnname, ...
+    'Data', d);
  
  figure(figure1); % pass focus back to the main strip charts for now
  
@@ -137,10 +141,17 @@ end
  
  % Opening the Logging Methods
  
- DateString = datestr(datetime('now'),'mmddyyyyHHMMSS');
- filename = ['HouseKeepingLog' DateString '.log']
- %dlmwrite(filename,data) - Demo of how to use the log file in the program
+ curver = version('-release');
  
+ if strcmp(curver,'2014b') | strcmp(curver,'2015a') | strcmp(curver,'2015b')
+    curver
+    DateString = datestr(datetime('now'),'mmddyyyyHHMMSS');
+    filename = ['HouseKeepingLog' DateString '.log']
+    %dlmwrite(filename,data) - Demo of how to use the log file in the program
+ else
+    curver
+    % Here is where the older logfile creation will go
+ end
  % Running the main loop
  
  StripChart('Initialize',gca,'Packets')
@@ -160,6 +171,8 @@ end
     StripChart('Update',hLine4,20*z2)
     pos = get(gcf,'pos');
     C.Position = [(pos(3)/2)-20 10 60 20];
+    newdata = {'EPS 8V4 Voltage' z};
+    set(t,'Data',newdata); % This is how we update the table
     drawnow
     i = i+1;
  end
