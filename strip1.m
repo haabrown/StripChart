@@ -14,6 +14,10 @@ clear all;
 %TMax = 200;
 %TMin = -55;
 iniSize = 8;
+labels = {'EPS 8V4 Voltage';'EPS 5V Voltage';'EPS 3V3 Voltage';...
+    'PV1 Voltage';'PV2 Voltage';'Battery Voltage';...
+    'Fuel Gauge VCELL';'CDH 5V Voltage';'CDH Battery Voltage';...
+    'INMS 5V Voltage';'INMS 3V5 Voltage';'INMS TH Voltage'};
 
 % Read in the .ini file
 
@@ -143,13 +147,12 @@ end
  
  curver = version('-release');
  
- if strcmp(curver,'2014b') | strcmp(curver,'2015a') | strcmp(curver,'2015b')
-    curver
+ if strcmp(curver,'2014b') || strcmp(curver,'2015a') || strcmp(curver,'2015b')
     DateString = datestr(datetime('now'),'mmddyyyyHHMMSS');
     filename = ['HouseKeepingLog' DateString '.log']
     %dlmwrite(filename,data) - Demo of how to use the log file in the program
  else
-    curver
+     curver
     % Here is where the older logfile creation will go
  end
  % Running the main loop
