@@ -139,17 +139,18 @@ end
  
  figure2 = figure('Position', [100 100 752 250]);
  set(figure(2),'Units','Normalized','OuterPosition',[0 0 0.5 1]);
- columnname = {'Hardware Label', 'Value'};
+ columnname = {'         Hardware Label         ', 'Value'};
  d = data;
  t = uitable('Parent',figure2, ...
     'ColumnName',columnname, ...
-    'Data',d);
+    'Data',d,'Units','Normalized');
+pos = get(figure2,'Position');
 if strcmp(curver,'2014b') || strcmp(curver,'2015a') || strcmp(curver,'2015b')
-    % Here is where we set the position in the new notation
+    t.Position = [0 t.Extent(4)/2 t.Extent(3) t.Extent(4)];
 else
     % Here is where we set the position in the old notation
     setter = get(t,'Extent');
-    set(t,'Position',setter);
+    set(t,'Position',[0 setter(4)/2 setter(3) setter(4)]);
 end
  
  figure(figure1); % pass focus back to the main strip charts for now
@@ -161,9 +162,9 @@ end
  
  % Adding the stop button
  
- pos = get(gcf,'pos');
- C = uicontrol('String','Stop','Callback','continuer = 0;');
- C.Position = [(pos(3)/2)-20 10 60 20];
+ C = uicontrol('String','Stop','Callback','continuer = 0;','parent',...
+     figure1,'Units','Normalized');
+ C.Position = [0.5 0.05 0.04 0.02];
  
  % Opening the Logging Methods
  
@@ -192,8 +193,7 @@ end
     StripChart('Update',TILine,TMin);
     StripChart('Update',hLine3,20*z)
     StripChart('Update',hLine4,20*z2)
-    pos = get(gcf,'pos');
-    C.Position = [(pos(3)/2)-20 10 60 20];
+    C.Position = [0.5 0.05 0.04 0.02];
     newdata = {'EPS 8V4 Voltage' z};
     set(t,'Data',newdata); % This is how we update the table
     drawnow
