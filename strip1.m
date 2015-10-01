@@ -164,18 +164,20 @@ end
  
  C = uicontrol('String','Stop','Callback','continuer = 0;','parent',...
      figure1,'Units','Normalized');
- C.Position = [0.5 0.05 0.04 0.02];
+ set(C,'Position', [0.5 0.05 0.06 0.02]);
  
  % Opening the Logging Methods
  
  if strcmp(curver,'2014b') || strcmp(curver,'2015a') || strcmp(curver,'2015b')
     DateString = datestr(datetime('now'),'mmddyyyyHHMMSS');
-    filename = ['HouseKeepingLog' DateString '.log']
     %dlmwrite(filename,data) - Demo of how to use the log file in the program
  else
-     curver
+     DateString = datestr(clock,'mmddyyyyHHMMSS');
     % Here is where the older logfile creation will go
  end
+ 
+ filename = ['HouseKeepingLog' DateString '.log']
+ 
  % Running the main loop
  
  StripChart('Initialize',gca,'Packets')
@@ -193,7 +195,7 @@ end
     StripChart('Update',TILine,TMin);
     StripChart('Update',hLine3,20*z)
     StripChart('Update',hLine4,20*z2)
-    C.Position = [0.5 0.05 0.04 0.02];
+    set(C,'Position', [0.5 0.05 0.06 0.02]);
     newdata = {'EPS 8V4 Voltage' z};
     set(t,'Data',newdata); % This is how we update the table
     drawnow
