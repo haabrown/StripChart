@@ -5,6 +5,10 @@
 close all;
 clear all;
 
+% Version Check
+
+curver = version('-release');
+
 % Given constant limits
 
 %VMax = 10;
@@ -17,7 +21,15 @@ iniSize = 8;
 labels = {'EPS 8V4 Voltage';'EPS 5V Voltage';'EPS 3V3 Voltage';...
     'PV1 Voltage';'PV2 Voltage';'Battery Voltage';...
     'Fuel Gauge VCELL';'CDH 5V Voltage';'CDH Battery Voltage';...
-    'INMS 5V Voltage';'INMS 3V5 Voltage';'INMS TH Voltage'};
+    'INMS 5V Voltage';'INMS 3V5 Voltage';'INMS TH Voltage';...
+    'EPS 8V4 Current';'EPS 5V Current';'EPS 3V3 Current';...
+    'PV1 Current';'PV2 Current';'Battery IC';'Battery ID';...
+    'INMS 5V Current';'INMS 3V5 Current';'INMS TH Current';...
+    'Battery T1';'Battery T2';'T3';'T1';'T2';'8.5 V Board Temperature';...
+    '3V5/5V Board Temperature';'CDH Temperature';'INMS TH Current'};
+datum = cell(31,1);
+datum(:) = {0};
+data = [labels,datum];
 
 % Read in the .ini file
 
@@ -121,14 +133,24 @@ end
  title('Temperature')
  ylabel('Temperature (C)')
  
+ set(figure(1),'Units','Normalized','OuterPosition',[0.5 0 0.5 1]);
+ 
  % Setting up the data tables
  
  figure2 = figure('Position', [100 100 752 250]);
+ set(figure(2),'Units','Normalized','OuterPosition',[0 0 0.5 1]);
  columnname = {'Hardware Label', 'Value'};
- d = {'EPS 8V4 Voltage' 0}; 
- t = uitable('Parent',figure2,'Position', [25 50 700 200], ...
+ d = data;
+ t = uitable('Parent',figure2, ...
     'ColumnName',columnname, ...
-    'Data', d);
+    'Data',d);
+if strcmp(curver,'2014b') || strcmp(curver,'2015a') || strcmp(curver,'2015b')
+    % Here is where we set the position in the new notation
+else
+    % Here is where we set the position in the old notation
+    setter = get(t,'Extent');
+    set(t,'Position',setter);
+end
  
  figure(figure1); % pass focus back to the main strip charts for now
  
@@ -144,8 +166,6 @@ end
  C.Position = [(pos(3)/2)-20 10 60 20];
  
  % Opening the Logging Methods
- 
- curver = version('-release');
  
  if strcmp(curver,'2014b') || strcmp(curver,'2015a') || strcmp(curver,'2015b')
     DateString = datestr(datetime('now'),'mmddyyyyHHMMSS');
