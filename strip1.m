@@ -77,14 +77,15 @@ end
  maxStripVal = floor(str2/str);
  x = 1:maxStripVal;
  x2 = 0*ones(maxStripVal,1);
+ x3 = ones(maxStripVal,1);
  
  % Setting up the initial plots with the limits hidden
  
  figure1 = figure;
  subplot(3,1,1);
  hold on;
- VXLine = plot(x,x2*VMax,'w');
- VILine = plot(x,x2*VMin,'w');
+ VXLine = plot(x,x3*VMax,'w');
+ VILine = plot(x,x3*VMin,'w');
  hLine = plot(x,x2*VMin); % EPS 8V4 Voltage
  hLine2 = plot(x,x2*VMin); % EPS 5V Voltage
  hLine3 = plot(x,x2*VMin); % EPS 3V3 Voltage
@@ -102,8 +103,8 @@ end
  ylabel('Voltage (V)')
  subplot(3,1,2);
  hold on;
- AXLine = plot(x,x2*AMax,'w');
- AILine = plot(x,x2*AMin,'w');
+ AXLine = plot(x,x3*AMax,'w');
+ AILine = plot(x,x3*AMin,'w');
  hLine13 = plot(x,x2*AMin); % EPS 8V4 Current
  hLine14 = plot(x,x2*AMin); % EPS 5V Current
  hLine15 = plot(x,x2*AMin); % EPS 3V3 Current
@@ -119,8 +120,8 @@ end
  ylabel('Current (A)')
  subplot(3,1,3);
  hold on;
- TXLine = plot(x,x2*TMax,'w');
- TILine = plot(x,x2*TMin,'w');
+ TXLine = plot(x,x3*TMax,'w');
+ TILine = plot(x,x3*TMin,'w');
  hLine23 = plot(x,x2*TMin); % Battery T1
  hLine24 = plot(x,x2*TMin); % Battery T2
  hLine25 = plot(x,x2*TMin); % T3
@@ -183,21 +184,50 @@ end
  StripChart('Initialize',gca,'Packets')
  %set(gcf, 'Position', get(0,'Screensize'));
  while(continuer)
-    z = sin(2*pi*i/1000)+2;
-    z2 = -1*z;
-    StripChart('Update',VXLine,VMax);
-    StripChart('Update',VILine,VMin);
-    StripChart('Update',hLine,z)
-    StripChart('Update',AXLine,AMax);
-    StripChart('Update',AILine,AMin);
-    StripChart('Update',hLine2,z2+5)
-    StripChart('Update',TXLine,TMax);
-    StripChart('Update',TILine,TMin);
-    StripChart('Update',hLine3,20*z)
-    StripChart('Update',hLine4,20*z2)
+    %z = sin(2*pi*i/1000)+2;
+    %z2 = -1*z;
+    % Need to do 3 things here:
+    %   Read in the new data and log it
+    %   Do any processing on it as needed
+    %   Update the plots, add the red for out of bounds values
+    [updated,datum] = GetData(i);
+    if updated  
+        newdata = [labels,datum];
+        ToLog(datum,filename);
+        StripChart('update',hLine,datum{1});
+        StripChart('update',hLine2,datum{2});
+        StripChart('update',hLine3,datum{3});
+        StripChart('update',hLine4,datum{4});
+        StripChart('update',hLine5,datum{5});
+        StripChart('update',hLine6,datum{6});
+        StripChart('update',hLine7,datum{7});
+        StripChart('update',hLine8,datum{8});
+        StripChart('update',hLine9,datum{9});
+        StripChart('update',hLine10,datum{10});
+        StripChart('update',hLine11,datum{11});
+        StripChart('update',hLine12,datum{12});
+        StripChart('update',hLine13,datum{13});
+        StripChart('update',hLine14,datum{14});
+        StripChart('update',hLine15,datum{15});
+        StripChart('update',hLine16,datum{16});
+        StripChart('update',hLine17,datum{17});
+        StripChart('update',hLine18,datum{18});
+        StripChart('update',hLine19,datum{19});
+        StripChart('update',hLine20,datum{20});
+        StripChart('update',hLine21,datum{21});
+        StripChart('update',hLine22,datum{22});
+        StripChart('update',hLine23,datum{23});
+        StripChart('update',hLine24,datum{24});
+        StripChart('update',hLine25,datum{25});
+        StripChart('update',hLine26,datum{26});
+        StripChart('update',hLine27,datum{27});
+        StripChart('update',hLine28,datum{28});
+        StripChart('update',hLine29,datum{29});
+        StripChart('update',hLine30,datum{30});
+        StripChart('update',hLine31,datum{31});
+        set(t,'Data',newdata); % This is how we update the table
+    end
     set(C,'Position', [0.5 0.05 0.06 0.02]);
-    newdata = {'EPS 8V4 Voltage' z};
-    set(t,'Data',newdata); % This is how we update the table
     drawnow
     i = i+1;
  end
