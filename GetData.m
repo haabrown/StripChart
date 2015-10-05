@@ -9,7 +9,12 @@ function [ updated, data ] = GetData(i)
     updated = 1; % 1 for an update, 0 for no change
     z = sin(2*pi*i/1000)+2;
     z2 = -1*z;
-    data = {z;z2;z;z2;z;z2;z;z2;z;z2;z;z2;z;z2;z;z2;z;z2;z;z2;z;z2;z;z2;...
+    if mod(i,2) == 0
+        z3 = z;
+    else
+        z3 = z2;
+    end
+    data = {z;z3;z;z2;z;z2;z;z2;z;z2;z;z2;z;z3;z;z2;z;z2;z;z2;z;z2;z;z2;...
         20*z;20*z2;20*z;20*z2;20*z;20*z2;20*z};
     
 end

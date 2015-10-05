@@ -159,7 +159,7 @@ end
  % Setting up for the loop
  
  continuer = 1;
- i = 1;
+ j = 1;
  
  % Adding the stop button
  
@@ -190,7 +190,7 @@ end
     %   Read in the new data and log it
     %   Do any processing on it as needed
     %   Update the plots, add the red for out of bounds values
-    [updated,datum] = GetData(i);
+    [updated,datum] = GetData(j);
     if updated  
         newdata = [labels,datum];
         ToLog(datum,filename);
@@ -228,6 +228,24 @@ end
         set(t,'Data',newdata); % This is how we update the table
     end
     set(C,'Position', [0.5 0.05 0.06 0.02]);
+    for i = 1:12
+        curdat = datum{i};
+        if curdat < VMin || curdat > VMax
+            newdata = TurnRed(t,newdata,i);
+        end
+    end
+    for i = 13:22
+        curdat = datum{i};
+        if curdat < AMin || curdat > AMax
+             newdata = TurnRed(t,newdata,i);
+        end
+    end
+    for i = 23:31
+        curdat = datum{i};
+        if curdat < TMin || curdat > TMax
+             newdata = TurnRed(t,newdata,i);
+        end
+    end
     drawnow
-    i = i+1;
+    j = j+1;
  end
