@@ -39,7 +39,7 @@ textIni = Initializations.textdata();
 dataIni = Initializations.data();
 Inputs = length(textIni);
 if Inputs ~= iniSize
-    error('Invalid .ini file, consult the documentation to make sure you have 8 fields.');
+    error('Invalid .ini file, consult the documentation to make sure you have enough fields.');
     return
 end
 
@@ -184,8 +184,7 @@ end
  StripChart('Initialize',gca,'Packets')
  %set(gcf, 'Position', get(0,'Screensize'));
  while(continuer)
-    %z = sin(2*pi*i/1000)+2;
-    %z2 = -1*z;
+    tic
     % Need to do 3 things here:
     %   Read in the new data and log it
     %   Do any processing on it as needed
@@ -248,4 +247,5 @@ end
     end
     drawnow
     j = j+1;
+    toc
  end
