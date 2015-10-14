@@ -113,7 +113,7 @@ end
  hLine18 = plot(x,x2*AMin); % Battery IC
  hLine19 = plot(x,x2*AMin); % Battery ID
  hLine20 = plot(x,x2*AMin); % INMS 5V Current
- hLine21 = plot(x,x2*AMin); % INMS 3V5 Current
+ hLine21 = plot(x,x2*AMin); % INMS 3V5 Current 
  hLine22 = plot(x,x2*AMin); % INMS TH Current
  set(gca,'XTick',[]);
  title('Current')
@@ -177,7 +177,7 @@ end
     % Here is where the older logfile creation will go
  end
  
- binaryname = ['HouseKeepingPackets' DateString '.dat']
+ binaryname = ['HouseKeepingPackets' DateString '.bat']
  filename = ['HouseKeepingLog' DateString '.log']
  
  % Running the main loop
