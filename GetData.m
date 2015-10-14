@@ -1,4 +1,4 @@
-function [ updated, data ] = GetData(i)
+function [ updated, binary, data ] = GetData(i)
     % GetData Converts a housekeeping packet into a new data column
     %   The GetData function polls the UART line to see if housekeeping
     %   data is available - if so, it will convert it into a column of data
@@ -16,5 +16,6 @@ function [ updated, data ] = GetData(i)
     end
     data = {z;z3;z;z2;z;z2;z;z2;z;z2;z;z2;z;z3;z;z2;z;z2;z;z2;z;z2;z;z2;...
         20*z;20*z2;20*z;20*z2;20*z;20*z2;20*z};
+    binary = 12345;
     
 end

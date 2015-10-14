@@ -177,6 +177,7 @@ end
     % Here is where the older logfile creation will go
  end
  
+ binaryname = ['HouseKeepingPackets' DateString '.dat']
  filename = ['HouseKeepingLog' DateString '.log']
  
  % Running the main loop
@@ -189,10 +190,10 @@ end
     %   Read in the new data and log it
     %   Do any processing on it as needed
     %   Update the plots, add the red for out of bounds values
-    [updated,datum] = GetData(j);
+    [updated,binary,datum] = GetData(j);
     if updated  
         newdata = [labels,datum];
-        ToLog(datum,filename);
+        ToLog(binary,datum,binaryname,filename);
         StripChart('update',hLine,datum{1});
         StripChart('update',hLine2,datum{2});
         StripChart('update',hLine3,datum{3});
