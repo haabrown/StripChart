@@ -4,6 +4,18 @@
 close all;
 clear all;
 
+% Testing out hex stuff
+
+a = 247; % The decimal representation of 10000000
+
+get7 = 128; % The decimal way to pull out the first bit
+get620 = 127; % The decimal way to pull out the next 7 bits
+
+uint8(bitshift(bitand(a,get7),-7))
+uint8(bitand(a,get620))
+
+return
+
 % Constants
 
 %providedport = '/dev/ttyS0'; % For linux

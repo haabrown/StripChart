@@ -1,8 +1,5 @@
 function [ Temp ] = TMP100( byte )
 
-bits1  = 1; % The bit sign bit
-bits2 = 1; % The remaining bits
-Temp = (-1*bits1)+uint8(bits2); % Result is in degrees C
+Temp = (-1*int8(bitshift(bitand(uint8(byte),128),-7)))+int8(uint8(bitand(uint8(byte),127))); % Result is in degrees C
 
-% Depending on how this works, may end up removing bits1 and bits2 and
-% doing all the work inside the Temp equation.
+% I am not overly happy with this, this may need to be further addressed
