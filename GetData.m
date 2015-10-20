@@ -19,12 +19,13 @@ function [ updated, binary, data ] = GetData(i)
     % containing the information we need to plot
     
     binary = 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa';
-    voltages = [binary(44),binary(45),binary(46),binary(50),binary(51),binary(61),binary(66),binary(42),binary(43),binary(69),binary(70),0]
+    voltages = [Volts(binary(44)),Volts(binary(45)),Volts(binary(46)),Volts(binary(50)),Volts(binary(51)),VoltsBatt(binary(61)),double(binary(66)),VoltsCDH5(binary(42)),VoltsCDHB(binary(43)),Volts(binary(69)),Volts(binary(70)),0];
         % Missing the INMS TH Voltage
-    currents = [binary(47),binary(48),binary(49),binary(52),binary(53),binary(62),binary(63),binary(71),binary(72),0]
+    currents = [Curs(binary(47)),Curs(binary(48)),Curs(binary(49)),Curs(binary(52)),Curs(binary(53)),CursBatt(binary(62)),CursBatt(binary(63)),Curs(binary(71)),Curs(binary(72)),0];
         % Missing the INMS TH Current
-    temps = [ThermBatt(binary(54:55)),ThermBatt(binary(56:57)),binary(60),binary(58),binary(59),binary(64),binary(65),binary(41),binary(74)]
+    temps = [ThermBatt(binary(54:55)),ThermBatt(binary(56:57)),ThermSolar(binary(60)),ThermSolar(binary(58)),ThermSolar(binary(59)),TMP100(binary(64)),TMP100(binary(65)),TMP100(binary(41)),TMP100(binary(74))];
     %data = {z;z3;z;z2;z;z2;z;z2;z;z2;z;z2;z;z3;z;z2;z;z2;z;z2;z;z2;z;z2;...
       %  20*z;20*z2;20*z;20*z2;20*z;20*z2;20*z};
     data = [voltages,currents,temps]';
+   	data = num2cell(data);
 end
