@@ -18,8 +18,8 @@ clear all;
 
 % Constants
 
-providedport = '/dev/ttyUSB0'; % For linux
-%providedport = 'COM1'; % For Windows
+%providedport = '/dev/ttyUSB0'; % For linux
+providedport = 'COM1'; % For Windows
 BaudRate = 9600;% The user provided baud rate (will come from .ini file)
 
 found = 0; % Serial port not found
@@ -47,13 +47,5 @@ end
 
 s = serial(providedport); % Create a serial object linked to the provided port
 set(s,'BaudRate',BaudRate); % Set the baud rate
-fopen(s);
-closeFID = onCleanup(@() fclose(s));
-%fprintf(s,'*IDN?')
-out = fscanf(s)
-tic
-out = fread(s,5)
-toc
-fclose(s);
-delete(s);
-clear s
+CleanupTest(s);
+clear s;
