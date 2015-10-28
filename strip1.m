@@ -4,6 +4,7 @@
 
 close all;
 clear all;
+delete(instrfindall); % Needed to avoid locking up the serial port
 
 % Version Check
 
@@ -11,13 +12,9 @@ curver = version('-release');
 
 % Given constant limits
 
-%VMax = 10;
-%VMin = 0;
-%AMax = 4;
-%AMin = 0;
-%TMax = 200;
-%TMin = -55;
-iniSize = 8;
+%ProvidedPort = '/dev/ttyUSB0';
+%BaudRate = 9600;
+iniSize = 10;
 labels = {'EPS 8V4 Voltage';'EPS 5V Voltage';'EPS 3V3 Voltage';...
     'PV1 Voltage';'PV2 Voltage';'Battery Voltage';...
     'Fuel Gauge VCELL';'CDH 5V Voltage';'CDH Battery Voltage';...
@@ -65,12 +62,47 @@ for i = 1:iniSize
             str = curdat;
         case 'MaxPackets'
             str2 = curdat;
+        case 'BaudRate'
+            BaudRate = curdat;
+        case 'ProvidedPort'
+            if isunix
+                ProvidedPort = strcat('/dev/ttyUSB',num2str(curdat)); 
+            elseif ispc
+                ProvidedPort = strcat('COM',num2str(curdat))
+            else
+                Error('Operating system not planned for at this time.')
+            end
         otherwise
             n
             Error('Above .ini field is not valid at this time.')
             return
     end
 end
+
+% Testing the serial port
+
+ports = instrhwinfo('serial');
+ports = ports.SerialPorts;
+numports = length(ports);
+for i = 1:numports
+    curport = ports{i}; % Array of char arrays
+    if strcmp(ProvidedPort,curport)
+        found = 1; % Testing a serial port provided by the user against 
+                     % the existing serial ports on the hardware
+        break;
+    end
+end
+
+if (~found)
+    ProvidedPort
+    error('The above serial port is not valid. Please check the hardware connection and the .ini file and try again.')
+end
+
+% Setting up the serial object
+
+sObj = serial(ProvidedPort);
+set(sObj,'BaudRate',BaudRate);
+fopen(sObj);
  
  % The arrays needed to 'prime' the plot
 
@@ -190,43 +222,41 @@ end
     %   Read in the new data and log it
     %   Do any processing on it as needed
     %   Update the plots, add the red for out of bounds values
-    [updated,binary,datum] = GetData(j);
-    if updated  
-        newdata = [labels,datum];
-        ToLog(binary,datum,binaryname,filename);
-        StripChart('update',hLine,datum{1});
-        StripChart('update',hLine2,datum{2});
-        StripChart('update',hLine3,datum{3});
-        StripChart('update',hLine4,datum{4});
-        StripChart('update',hLine5,datum{5});
-        StripChart('update',hLine6,datum{6});
-        StripChart('update',hLine7,datum{7});
-        StripChart('update',hLine8,datum{8});
-        StripChart('update',hLine9,datum{9});
-        StripChart('update',hLine10,datum{10});
-        StripChart('update',hLine11,datum{11});
-        StripChart('update',hLine12,datum{12});
-        StripChart('update',hLine13,datum{13});
-        StripChart('update',hLine14,datum{14});
-        StripChart('update',hLine15,datum{15});
-        StripChart('update',hLine16,datum{16});
-        StripChart('update',hLine17,datum{17});
-        StripChart('update',hLine18,datum{18});
-        StripChart('update',hLine19,datum{19});
-        StripChart('update',hLine20,datum{20});
-        StripChart('update',hLine21,datum{21});
-        StripChart('update',hLine22,datum{22});
-        StripChart('update',hLine23,datum{23});
-        StripChart('update',hLine24,datum{24});
-        StripChart('update',hLine25,datum{25});
-        StripChart('update',hLine26,datum{26});
-        StripChart('update',hLine27,datum{27});
-        StripChart('update',hLine28,datum{28});
-        StripChart('update',hLine29,datum{29});
-        StripChart('update',hLine30,datum{30});
-        StripChart('update',hLine31,datum{31});
-        set(t,'Data',newdata); % This is how we update the table
-    end
+    [binary,datum] = GetData(sObj);  
+    newdata = [labels,datum];
+    ToLog(binary,datum,binaryname,filename);
+    StripChart('update',hLine,datum{1});
+    StripChart('update',hLine2,datum{2});
+    StripChart('update',hLine3,datum{3});
+    StripChart('update',hLine4,datum{4});
+    StripChart('update',hLine5,datum{5});
+    StripChart('update',hLine6,datum{6});
+    StripChart('update',hLine7,datum{7});
+    StripChart('update',hLine8,datum{8});
+    StripChart('update',hLine9,datum{9});
+    StripChart('update',hLine10,datum{10});
+    StripChart('update',hLine11,datum{11});
+    StripChart('update',hLine12,datum{12});
+    StripChart('update',hLine13,datum{13});
+    StripChart('update',hLine14,datum{14});
+    StripChart('update',hLine15,datum{15});
+    StripChart('update',hLine16,datum{16});
+    StripChart('update',hLine17,datum{17});
+    StripChart('update',hLine18,datum{18});
+    StripChart('update',hLine19,datum{19});
+    StripChart('update',hLine20,datum{20});
+    StripChart('update',hLine21,datum{21});
+    StripChart('update',hLine22,datum{22});
+    StripChart('update',hLine23,datum{23});
+    StripChart('update',hLine24,datum{24});
+    StripChart('update',hLine25,datum{25});
+    StripChart('update',hLine26,datum{26});
+    StripChart('update',hLine27,datum{27});
+    StripChart('update',hLine28,datum{28});
+    StripChart('update',hLine29,datum{29});
+    StripChart('update',hLine30,datum{30});
+    StripChart('update',hLine31,datum{31});
+    set(t,'Data',newdata); % This is how we update the table
     set(C,'Position', [0.5 0.05 0.06 0.02]);
     for i = 1:12
         curdat = datum{i};
@@ -250,3 +280,9 @@ end
     j = j+1;
     toc
  end
+ 
+ % Cleaning up the serial object
+ 
+ fclose(sObj);
+ delete(sObj);
+ clear sObj;
