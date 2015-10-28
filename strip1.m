@@ -1,6 +1,5 @@
-% Strip Chart first Written Test
-
-% Be aware that this code is currently not backwards compatible past 2014b
+% This is the main code that generates and maintains the strip charts as
+% needed for the QB50 sensor testing/monitoring.
 
 close all;
 clear all;
@@ -12,19 +11,19 @@ curver = version('-release');
 
 % Given constant limits
 
-%ProvidedPort = '/dev/ttyUSB0';
-%BaudRate = 9600;
+found = 0; % Serial port not found
 iniSize = 10;
 labels = {'EPS 8V4 Voltage';'EPS 5V Voltage';'EPS 3V3 Voltage';...
     'PV1 Voltage';'PV2 Voltage';'Battery Voltage';...
     'Fuel Gauge VCELL';'CDH 5V Voltage';'CDH Battery Voltage';...
-    'INMS 5V Voltage';'INMS 3V5 Voltage';'INMS TH Voltage';...
+    'INMS 5V Voltage';'INMS 3V5 Voltage';...
     'EPS 8V4 Current';'EPS 5V Current';'EPS 3V3 Current';...
     'PV1 Current';'PV2 Current';'Battery IC';'Battery ID';...
-    'INMS 5V Current';'INMS 3V5 Current';'INMS TH Current';...
+    'INMS 5V Current';'INMS 3V5 Current';...
     'Battery T1';'Battery T2';'T3';'T1';'T2';'8.5 V Board Temperature';...
-    '3V5/5V Board Temperature';'CDH Temperature';'INMS TH Current'};
-datum = cell(31,1);
+    '3V5/5V Board Temperature';'CDH Temperature';'INMS TH Current';...
+    'INMS TH Temperature';};
+datum = cell(30,1);
 datum(:) = {0};
 data = [labels,datum];
 
@@ -68,7 +67,7 @@ for i = 1:iniSize
             if isunix
                 ProvidedPort = strcat('/dev/ttyUSB',num2str(curdat)); 
             elseif ispc
-                ProvidedPort = strcat('COM',num2str(curdat))
+                ProvidedPort = strcat('COM',num2str(curdat));
             else
                 Error('Operating system not planned for at this time.')
             end
@@ -129,7 +128,6 @@ fopen(sObj);
  hLine9 = plot(x,x2*VMin); % CDH Battery Voltage
  hLine10 = plot(x,x2*VMin); % INMS 5V Voltage
  hLine11 = plot(x,x2*VMin); % INMS 3V5 Voltage
- hLine12 = plot(x,x2*VMin); % INMS TH Voltage
  set(gca,'XTick',[]);
  title('Voltage')
  ylabel('Voltage (V)')
@@ -137,16 +135,15 @@ fopen(sObj);
  hold on;
  AXLine = plot(x,x3*AMax,'w');
  AILine = plot(x,x3*AMin,'w');
- hLine13 = plot(x,x2*AMin); % EPS 8V4 Current
- hLine14 = plot(x,x2*AMin); % EPS 5V Current
- hLine15 = plot(x,x2*AMin); % EPS 3V3 Current
- hLine16 = plot(x,x2*AMin); % PV1 Current
- hLine17 = plot(x,x2*AMin); % PV2 Current
- hLine18 = plot(x,x2*AMin); % Battery IC
- hLine19 = plot(x,x2*AMin); % Battery ID
- hLine20 = plot(x,x2*AMin); % INMS 5V Current
- hLine21 = plot(x,x2*AMin); % INMS 3V5 Current 
- hLine22 = plot(x,x2*AMin); % INMS TH Current
+ hLine12 = plot(x,x2*AMin); % EPS 8V4 Current
+ hLine13 = plot(x,x2*AMin); % EPS 5V Current
+ hLine14 = plot(x,x2*AMin); % EPS 3V3 Current
+ hLine15 = plot(x,x2*AMin); % PV1 Current
+ hLine16 = plot(x,x2*AMin); % PV2 Current
+ hLine17 = plot(x,x2*AMin); % Battery IC
+ hLine18 = plot(x,x2*AMin); % Battery ID
+ hLine19 = plot(x,x2*AMin); % INMS 5V Current
+ hLine20 = plot(x,x2*AMin); % INMS 3V5 Current 
  set(gca,'XTick',[]);
  title('Current')
  ylabel('Current (A)')
@@ -154,15 +151,16 @@ fopen(sObj);
  hold on;
  TXLine = plot(x,x3*TMax,'w');
  TILine = plot(x,x3*TMin,'w');
- hLine23 = plot(x,x2*TMin); % Battery T1
- hLine24 = plot(x,x2*TMin); % Battery T2
- hLine25 = plot(x,x2*TMin); % T3
- hLine26 = plot(x,x2*TMin); % T1
- hLine27 = plot(x,x2*TMin); % T2
- hLine28 = plot(x,x2*TMin); % 8.5 V Board Temperature
- hLine29 = plot(x,x2*TMin); % 3V5/5V Board Temperature
- hLine30 = plot(x,x2*TMin); % CDH Temperature
- hLine31 = plot(x,x2*TMin); % Com Temperature
+ hLine21 = plot(x,x2*TMin); % Battery T1
+ hLine22 = plot(x,x2*TMin); % Battery T2
+ hLine23 = plot(x,x2*TMin); % T3
+ hLine24 = plot(x,x2*TMin); % T1
+ hLine25 = plot(x,x2*TMin); % T2
+ hLine26 = plot(x,x2*TMin); % 8.5 V Board Temperature
+ hLine27 = plot(x,x2*TMin); % 3V5/5V Board Temperature
+ hLine28 = plot(x,x2*TMin); % CDH Temperature
+ hLine29 = plot(x,x2*TMin); % Com Temperature
+ hLine30 = plot(x,x2*VMin); % INMS TH Temperature
  title('Temperature')
  ylabel('Temperature (C)')
  
@@ -255,22 +253,21 @@ end
     StripChart('update',hLine28,datum{28});
     StripChart('update',hLine29,datum{29});
     StripChart('update',hLine30,datum{30});
-    StripChart('update',hLine31,datum{31});
     set(t,'Data',newdata); % This is how we update the table
     set(C,'Position', [0.5 0.05 0.06 0.02]);
-    for i = 1:12
+    for i = 1:11
         curdat = datum{i};
         if curdat < VMin || curdat > VMax
             newdata = TurnRed(t,newdata,i);
         end
     end
-    for i = 13:22
+    for i = 12:20
         curdat = datum{i};
         if curdat < AMin || curdat > AMax
              newdata = TurnRed(t,newdata,i);
         end
     end
-    for i = 23:31
+    for i = 21:30
         curdat = datum{i};
         if curdat < TMin || curdat > TMax
              newdata = TurnRed(t,newdata,i);
