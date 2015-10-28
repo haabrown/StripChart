@@ -6,7 +6,7 @@ closeFID = onCleanup(@() fclose(s));
 deleteFID = onCleanup(@() delete(s));
 out = fscanf(s)
 tic
-out = fread(s,5)
+out = fread(s,128)
 toc
 
 end

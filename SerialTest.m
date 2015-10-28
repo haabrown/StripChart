@@ -18,8 +18,8 @@ clear all;
 
 % Constants
 
-%providedport = '/dev/ttyUSB0'; % For linux
-providedport = 'COM1'; % For Windows
+providedport = '/dev/ttyUSB0'; % For linux
+%providedport = 'COM1'; % For Windows
 BaudRate = 9600;% The user provided baud rate (will come from .ini file)
 
 found = 0; % Serial port not found
