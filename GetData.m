@@ -15,7 +15,11 @@ function [ binary, data ] = GetData(sObj)
         % Missing the INMS TH Voltage
     currents = [Curs(binary(47)),Curs(binary(48)),Curs(binary(49)),Curs(binary(52)),Curs(binary(53)),CursBatt(binary(62)),CursBatt(binary(63)),Curs(binary(71)),Curs(binary(72))];
         % Missing the INMS TH Current
-    temps = [ThermBatt(hex2dec(binary(54:55)')),ThermBatt(hex2dec(binary(56:57)')),ThermSolar(binary(60)),ThermSolar(binary(58)),ThermSolar(binary(59)),TMP100(binary(64)),TMP100(binary(65)),TMP100(binary(41)),TMP100(binary(74)),INMSTrans(binary(73))];
+    inter1 = dec2hex(binary(54:55));
+    inter2 = dec2hex(binary(54:55));
+    inter1 = strcat(inter1(1,:),inter1(2,:));
+    inter2 = strcat(inter2(1,:),inter2(2,:));
+    temps = [ThermBatt(hex2dec(inter1)),ThermBatt(hex2dec(inter2)),ThermSolar(binary(60)),ThermSolar(binary(58)),ThermSolar(binary(59)),TMP100(binary(64)),TMP100(binary(65)),TMP100(binary(41)),TMP100(binary(74)),INMSTrans(binary(73))];
     %data = {z;z3;z;z2;z;z2;z;z2;z;z2;z;z2;z;z3;z;z2;z;z2;z;z2;z;z2;z;z2;...
       %  20*z;20*z2;20*z;20*z2;20*z;20*z2;20*z};
     data = [voltages,currents,temps]';
