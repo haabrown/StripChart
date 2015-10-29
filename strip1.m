@@ -201,10 +201,8 @@ end
  
  if strcmp(curver,'2014b') || strcmp(curver,'2015a') || strcmp(curver,'2015b')
     DateString = datestr(datetime('now'),'mmddyyyyHHMMSS');
-    %dlmwrite(filename,data) - Demo of how to use the log file in the program
  else
      DateString = datestr(clock,'mmddyyyyHHMMSS');
-    % Here is where the older logfile creation will go
  end
  
  binaryname = ['HouseKeepingPackets' DateString '.bat']
@@ -213,7 +211,6 @@ end
  % Running the main loop
  
  StripChart('Initialize',gca,'Packets')
- %set(gcf, 'Position', get(0,'Screensize'));
  while(continuer)
     tic
     % Need to do 3 things here:
