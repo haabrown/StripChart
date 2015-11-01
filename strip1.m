@@ -13,6 +13,7 @@ curver = version('-release');
 
 found = 0; % Serial port not found
 iniSize = 10;
+Timeout = 60; % Wait a full minute before giving up on the serial port. 
 labels = {'EPS 8V4 Voltage';'EPS 5V Voltage';'EPS 3V3 Voltage';...
     'PV1 Voltage';'PV2 Voltage';'Battery Voltage';...
     'Fuel Gauge VCELL';'CDH 5V Voltage';'CDH Battery Voltage';...
@@ -100,7 +101,7 @@ end
 % Setting up the serial object
 
 sObj = serial(ProvidedPort);
-set(sObj,'BaudRate',BaudRate);
+set(sObj,'BaudRate',BaudRate,'Timeout',Timeout);
 fopen(sObj);
  
  % The arrays needed to 'prime' the plot
