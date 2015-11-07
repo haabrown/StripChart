@@ -219,8 +219,11 @@ end
     %   Do any processing on it as needed
     %   Update the plots, add the red for out of bounds values
     [binary,datum] = GetData(sObj);  
-    newdata = [labels,datum];
     ToLog(binary,datum,binaryname,filename);
+    for counterer = 21:30
+        datum{counterer} = ceil(datum{counterer}*10)/10;
+    end
+    newdata = [labels,datum];
     StripChart('update',hLine,datum{1});
     StripChart('update',hLine2,datum{2});
     StripChart('update',hLine3,datum{3});
