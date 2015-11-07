@@ -8,8 +8,8 @@ function [ binary, data ] = GetData(sObj)
     % containing the information we need to plot
     
     
-    binary = fread(sObj,128);
-    %binary = ones(128,1)*10; % Used for testing only. Does not read
+    %binary = fread(sObj,128);
+    binary = ones(128,1)*10; % Used for testing only. Does not read
     %serial.
     voltages = [Volts(binary(44)),Volts(binary(45)),Volts(binary(46)),Volts(binary(50)),Volts(binary(51)),VoltsBatt(binary(61)),FG_VCell(binary(66)),VoltsCDH5(binary(42)),VoltsCDHB(binary(43)),Volts(binary(69)),Volts(binary(70))];
     currents = [Curs(binary(47)),Curs(binary(48)),Curs(binary(49)),Curs(binary(52)),Curs(binary(53)),CursBatt(binary(62)),CursBatt(binary(63)),CursINMS(binary(71)),CursINMS(binary(72))];
