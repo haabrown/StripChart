@@ -1,6 +1,6 @@
 1)	Turn on MATLAB.
-2)	Navigate to the correct directory - logfiles will be saved here.
-3)  Ensure that QB50.ini has been set to your specifications.
+2)	Navigate to the directory where you wish to save logfiles and make it the current folder - logfiles will be saved here.
+3)	Ensure that QB50.ini has been set to your specifications.
 4)	Select strip1.m and run it.
 5)	When you are ready to end the strip chart run, select Stop on the plot button.
 	Do not use control-c or close the window to stop the run, as these methods
