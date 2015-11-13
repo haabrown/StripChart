@@ -14,6 +14,7 @@ curver = version('-release');
 found = 0; % Serial port not found
 iniSize = 10;
 Timeout = 60; % Wait a full minute before giving up on the serial port. 
+SolarCatcher = -982;    % A special voltage for the solar temps
 labels = {'EPS 8V4 Voltage';'EPS 5V Voltage';'EPS 3V3 Voltage';...
     'PV1 Voltage';'PV2 Voltage';'Battery Voltage';...
     'Fuel Gauge VCELL';'CDH 5V Voltage';'CDH Battery Voltage';...
@@ -244,11 +245,31 @@ end
     StripChart('update',hLine18,datum{18});
     StripChart('update',hLine19,datum{19});
     StripChart('update',hLine20,datum{20});
-    StripChart('update',hLine21,datum{21});
-    StripChart('update',hLine22,datum{22});
-    StripChart('update',hLine23,datum{23});
-    StripChart('update',hLine24,datum{24});
-    StripChart('update',hLine25,datum{25});
+    if datum{21} == SolarCatcher
+        StripChart('update',hLine21,0);
+    else
+        StripChart('update',hLine21,datum{21});
+    end
+    if datum{22} == SolarCatcher
+        StripChart('update',hLine22,0);
+    else
+        StripChart('update',hLine22,datum{22});
+    end
+    if datum{23} == SolarCatcher
+        StripChart('update',hLine23,0);
+    else
+        StripChart('update',hLine23,datum{23});
+    end
+    if datum{24} == SolarCatcher
+        StripChart('update',hLine24,0);
+    else
+        StripChart('update',hLine24,datum{24});
+    end
+    if datum{25} == SolarCatcher
+        StripChart('update',hLine25,0);
+    else
+        StripChart('update',hLine25,datum{25});
+    end
     StripChart('update',hLine26,datum{26});
     StripChart('update',hLine27,datum{27});
     StripChart('update',hLine28,datum{28});
