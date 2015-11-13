@@ -291,7 +291,9 @@ end
     end
     for i = 21:30
         curdat = datum{i};
-        if curdat < TMin || curdat > TMax
+        if curdat == SolarCatcher
+            newdata = TurnBlue(t,newdata,i);
+        elseif curdat < TMin || curdat > TMax
              newdata = TurnRed(t,newdata,i);
         end
     end
