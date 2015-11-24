@@ -7,27 +7,47 @@ clear all;
 
 % Constant values
 
-filetype = '*.log'; % the supported file types
-numberOfValues = 39; % the number of checkboxes to be made available
-heightVal = 1/(numberOfValues+1); % the divider
+fileType = '*.log'; % the supported file types
+numberOfValues = 30; % the number of checkboxes to be made available
+taskbarSize = 0.037; % Height of the windows taskbar
+screenSize = 1-taskbarSize;
+heightVal = screenSize/(numberOfValues); % the divider
+labels = {'EPS 8V4 Voltage';'EPS 5V Voltage';'EPS 3V3 Voltage';...
+    'PV1 Voltage';'PV2 Voltage';'Battery Voltage';...
+    'Fuel Gauge VCELL';'CDH 5V Voltage';'CDH Battery Voltage';...
+    'INMS 5V Voltage';'INMS 3V5 Voltage';...
+    'EPS 8V4 Current';'EPS 5V Current';'EPS 3V3 Current';...
+    'PV1 Current';'PV2 Current';'Battery IC';'Battery ID';...
+    'INMS 5V Current';'INMS 3V5 Current';...
+    'Battery T1';'Battery T2';'T3';'T1';'T2';'8.5 V Board Temperature';...
+    '3V5/5V Board Temperature';'CDH Temperature';'Comm Temperature';...
+    'INMS TH Temperature';};
+global includedValues; % created as a global to convince MATLAB to stop being strange
+includedValues = ones(30,1);
 
 % Opening the desired log file (this could be updated to also get .bat
 % files).
 
-[FileName,PathName] = uigetfile(filetype,'Select the logfile to plot.');
-filename = strcat(PathName,FileName) % making note of the filename including path
+[FileName,PathName] = uigetfile(fileType,'Select the logfile to plot.');
+fileName = strcat(PathName,FileName) % making note of the filename including path
 
-LogData = csvread(filename); % Reading the csv file
+logData = csvread(fileName); % Reading the csv file
 
 % Creating the checkbox figure (Need to add callback functions)
 
 Checks.f = figure('Position', [100 100 752 250],'toolbar','none');
-set(Checks.f,'Units','Normalized','OuterPosition',[0.25 0 0.5 1]);
+set(Checks.f,'Units','Normalized','OuterPosition',[0.25 taskbarSize 0.5 screenSize]);
 for i = 1:numberOfValues % initializing the checkboxes
-    h.c(i) = uicontrol('style','checkbox','units','normalized',...
+    Checks.c(i) = uicontrol('style','checkbox','units','normalized',...
         'position',[0.3 heightVal*(numberOfValues-i+1) 0.4 heightVal],...
-        'string',i);
+        'string',labels{i},'Value',includedValues(i),'Callback',...
+        {@CheckboxCallback,i});
 end
-h.c(numberOfValues+1) = uicontrol('units','normalized',...
-    'position',[0.3 0 0.4 heightVal],'string','Continue');
-    % adding the continue button
+
+% Adding the continue button
+
+Checks.c(numberOfValues+1) = uicontrol('units','normalized',...
+    'position',[0.3 0 0.4 heightVal],'string','Continue','Callback',...
+    {@ContinueCallback,Checks.f});
+    % build the button
+uiwait(gcf);    % wait until the continue button is pressed
