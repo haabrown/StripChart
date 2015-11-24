@@ -35,7 +35,8 @@ logData = csvread(fileName); % Reading the csv file
 
 % Creating the checkbox figure (Need to add callback functions)
 
-Checks.f = figure('Position', [100 100 752 250],'toolbar','none');
+Checks.f = figure('Position', [100 100 752 250],'toolbar','none',...
+    'Name','Data to be plotted.','NumberTitle','off');
 set(Checks.f,'Units','Normalized','OuterPosition',[0.25 taskbarSize 0.5 screenSize]);
 for i = 1:numberOfValues % initializing the checkboxes
     Checks.c(i) = uicontrol('style','checkbox','units','normalized',...
