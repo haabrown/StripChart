@@ -3,7 +3,7 @@
 
 close all;
 clear all;
-delete(instrfindall); % Needed to avoid locking up the serial port
+delete(instrfindall); % needed to avoid locking up the serial port
 
 % Version Check
 
@@ -11,10 +11,10 @@ curver = version('-release');
 
 % Given constant limits
 
-found = 0; % Serial port not found
-iniSize = 10;
-Timeout = 60; % Wait a full minute before giving up on the serial port. 
-SolarCatcher = -982;    % A special voltage for the solar temps
+found = 0; % serial port not found
+iniSize = 10; % number of values that should be in the .ini file
+Timeout = 60; % wait a full minute before giving up on the serial port. 
+SolarCatcher = -982;    % a special voltage for the solar temps
 labels = {'EPS 8V4 Voltage';'EPS 5V Voltage';'EPS 3V3 Voltage';...
     'PV1 Voltage';'PV2 Voltage';'Battery Voltage';...
     'Fuel Gauge VCELL';'CDH 5V Voltage';'CDH Battery Voltage';...
@@ -24,29 +24,29 @@ labels = {'EPS 8V4 Voltage';'EPS 5V Voltage';'EPS 3V3 Voltage';...
     'INMS 5V Current';'INMS 3V5 Current';...
     'Battery T1';'Battery T2';'T3';'T1';'T2';'8.5 V Board Temperature';...
     '3V5/5V Board Temperature';'CDH Temperature';'Comm Temperature';...
-    'INMS TH Temperature';};
-datum = cell(30,1);
-datum(:) = {0};
-data = [labels,datum];
+    'INMS TH Temperature';}; % names of the phyical values
+datum = cell(30,1); % place to store the physical values
+datum(:) = {0}; % initialzing the datum
+data = [labels,datum]; % NEVER CHANGE THIS
 
 % Read in the .ini file
 
 filename = 'QB50.ini'; % default .ini file
-Initializations = importdata(filename);
-textIni = Initializations.textdata();
-dataIni = Initializations.data();
-Inputs = length(textIni);
-if Inputs ~= iniSize
+Initializations = importdata(filename); % read in the 
+textIni = Initializations.textdata(); % seperating out the .ini part
+dataIni = Initializations.data(); % seperating out the part value
+Inputs = length(textIni); % getting the number of .ini pairs
+if Inputs ~= iniSize % if the .ini file doesn't match what we expect
     error('Invalid .ini file, consult the documentation to make sure you have enough fields.');
     return
 end
 
 % Parse the .ini file
 
-for i = 1:iniSize
-    n = textIni{i};
-    curdat = dataIni(i);
-    switch n
+for i = 1:iniSize % the order of things in the .ini file doesn't matter, as long as there are enough things
+    n = textIni{i}; % current .ini label
+    curdat = dataIni(i); % corresponding .ini value 
+    switch n % switch yses the label to properly assign the value
         case 'VMax'
             VMax = curdat;
         case 'VMin'
@@ -65,7 +65,7 @@ for i = 1:iniSize
             str2 = curdat;
         case 'BaudRate'
             BaudRate = curdat;
-        case 'ProvidedPort'
+        case 'ProvidedPort' % handling differences in operating systems
             if isunix
                 ProvidedPort = strcat('/dev/ttyUSB',num2str(curdat)); 
             elseif ispc
@@ -73,7 +73,7 @@ for i = 1:iniSize
             else
                 Error('Operating system not planned for at this time.')
             end
-        otherwise
+        otherwise % otherwise, print out the invalid label so the user knows what went wrong
             n
             Error('Above .ini field is not valid at this time.')
             return
@@ -82,28 +82,28 @@ end
 
 % Testing the serial port
 
-ports = instrhwinfo('serial');
-ports = ports.SerialPorts;
-numports = length(ports);
+ports = instrhwinfo('serial'); % get a list of available ports
+ports = ports.SerialPorts; % obtain the names of the ports
+numports = length(ports); % get the number of available ports
 for i = 1:numports
-    curport = ports{i}; % Array of char arrays
+    curport = ports{i}; % array of char arrays
     if strcmp(ProvidedPort,curport)
-        found = 1; % Testing a serial port provided by the user against 
+        found = 1; % testing a serial port provided by the user against 
                      % the existing serial ports on the hardware
         break;
     end
 end
 
-if (~found)
+if (~found) % when the asked for port isn't there, exit the program
     ProvidedPort
     error('The above serial port is not valid. Please check the hardware connection and the .ini file and try again.')
 end
 
 % Setting up the serial object
 
-sObj = serial(ProvidedPort);
-set(sObj,'BaudRate',BaudRate,'Timeout',Timeout);
-fopen(sObj);
+sObj = serial(ProvidedPort); % build the serial object
+set(sObj,'BaudRate',BaudRate,'Timeout',Timeout); % set the properties
+fopen(sObj); % open the formatted serial port
  
  % The arrays needed to 'prime' the plot
 
@@ -117,8 +117,8 @@ fopen(sObj);
  figure1 = figure;
  subplot(3,1,1);
  hold on;
- VXLine = plot(x,x3*VMax,'w');
- VILine = plot(x,x3*VMin,'w');
+ VXLine = plot(x,x3*VMax,'w'); % drawing a hidden maximum line for the voltage
+ VILine = plot(x,x3*VMin,'w'); % drawing a hidden minimum line for the voltage
  hLine = plot(x,x2*VMin); % EPS 8V4 Voltage
  hLine2 = plot(x,x2*VMin); % EPS 5V Voltage
  hLine3 = plot(x,x2*VMin); % EPS 3V3 Voltage
@@ -135,8 +135,8 @@ fopen(sObj);
  ylabel('Voltage (V)')
  subplot(3,1,2);
  hold on;
- AXLine = plot(x,x3*AMax,'w');
- AILine = plot(x,x3*AMin,'w');
+ AXLine = plot(x,x3*AMax,'w'); % drawing a hidden maximum line for the current
+ AILine = plot(x,x3*AMin,'w'); % drawing a hidden minimum line for the current
  hLine12 = plot(x,x2*AMin); % EPS 8V4 Current
  hLine13 = plot(x,x2*AMin); % EPS 5V Current
  hLine14 = plot(x,x2*AMin); % EPS 3V3 Current
@@ -151,8 +151,8 @@ fopen(sObj);
  ylabel('Current (A)')
  subplot(3,1,3);
  hold on;
- TXLine = plot(x,x3*TMax,'w');
- TILine = plot(x,x3*TMin,'w');
+ TXLine = plot(x,x3*TMax,'w'); % drawing a hidden maximum line for the temperature
+ TILine = plot(x,x3*TMin,'w'); % drawing a hidden minimum line for the temperature
  hLine21 = plot(x,x2*TMin); % Battery T1
  hLine22 = plot(x,x2*TMin); % Battery T2
  hLine23 = plot(x,x2*TMin); % T3
@@ -166,7 +166,7 @@ fopen(sObj);
  title('Temperature')
  ylabel('Temperature (C)')
  
- set(figure(1),'Units','Normalized','OuterPosition',[0.5 0 0.5 1]);
+ set(figure(1),'Units','Normalized','OuterPosition',[0.5 0 0.5 1]); % place the figure on the screen
  
  % Setting up the data tables
  
@@ -179,9 +179,9 @@ fopen(sObj);
     'Data',d,'Units','Normalized');
 pos = get(figure2,'Position');
 if strcmp(curver,'2014b') || strcmp(curver,'2015a') || strcmp(curver,'2015b')
-    t.Position = [0 t.Extent(4)/2 t.Extent(3) t.Extent(4)];
+    t.Position = [0 t.Extent(4)/2 t.Extent(3) t.Extent(4)]; % position in the new system
 else
-    % Here is where we set the position in the old notation
+    % here is where we set the position in the old notation
     setter = get(t,'Extent');
     set(t,'Position',[0 setter(4)/2 setter(3) setter(4)]);
 end
@@ -191,7 +191,6 @@ end
  % Setting up for the loop
  
  continuer = 1;
- j = 1;
  
  % Adding the stop button
  
@@ -207,24 +206,20 @@ end
      DateString = datestr(clock,'mmddyyyyHHMMSS');
  end
  
- binaryname = ['HouseKeepingPackets' DateString '.bat']
- filename = ['HouseKeepingLog' DateString '.log']
+ binaryname = ['HouseKeepingPackets' DateString '.bat']  % file for storing hex values
+ filename = ['HouseKeepingLog' DateString '.log'] % file for storing physical values
  
  % Running the main loop
  
- StripChart('Initialize',gca,'Packets')
+ StripChart('Initialize',gca,'Packets') % start up the StripChart library
  while(continuer)
-    tic
-    % Need to do 3 things here:
-    %   Read in the new data and log it
-    %   Do any processing on it as needed
-    %   Update the plots, add the red for out of bounds values
-    [binary,datum] = GetData(sObj);  
-    ToLog(binary,datum,binaryname,filename);
-    for counterer = 21:30
+    [binary,datum] = GetData(sObj); % read a new data set
+    ToLog(binary,datum,binaryname,filename); % log the read data
+    for counterer = 21:30 % reduce accuracy of temperatures (Palo requested)
         datum{counterer} = ceil(datum{counterer}*10)/10;
     end
-    newdata = [labels,datum];
+    newdata = [labels,datum]; % set up the new labels+data pairs
+    % update the plots
     StripChart('update',hLine,datum{1});
     StripChart('update',hLine2,datum{2});
     StripChart('update',hLine3,datum{3});
@@ -245,8 +240,9 @@ end
     StripChart('update',hLine18,datum{18});
     StripChart('update',hLine19,datum{19});
     StripChart('update',hLine20,datum{20});
+    % catch divide by 0 errors
     if datum{21} == SolarCatcher
-        StripChart('update',hLine21,0);
+        StripChart('update',hLine21,0); 
     else
         StripChart('update',hLine21,datum{21});
     end
@@ -277,7 +273,8 @@ end
     StripChart('update',hLine30,datum{30});
     set(t,'Data',newdata); % This is how we update the table
     set(C,'Position', [0.5 0.05 0.06 0.02]);
-    for i = 1:11
+    % add coloring to the table as needed
+    for i = 1:11 
         curdat = datum{i};
         if curdat < VMin || curdat > VMax
             newdata = TurnRed(t,newdata,i);
@@ -297,13 +294,11 @@ end
              newdata = TurnRed(t,newdata,i);
         end
     end
-    drawnow
-    j = j+1;
-    toc
+    drawnow % update the screen
  end
  
  % Cleaning up the serial object
  
- fclose(sObj);
- delete(sObj);
- clear sObj;
+ fclose(sObj); % close the object
+ delete(sObj); % delete it
+ clear sObj; % free it
