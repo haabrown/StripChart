@@ -10,7 +10,7 @@ clear all;
 fileType = '*.log'; % the supported file types
 numberOfValues = 30; % the number of checkboxes to be made available
 taskbarSize = 0.037; % Height of the windows taskbar
-screenSize = 1-taskbarSize;
+screenSize = 1-taskbarSize; % measuring the avialable screen room
 heightVal = screenSize/(numberOfValues); % the divider
 labels = {'EPS 8V4 Voltage';'EPS 5V Voltage';'EPS 3V3 Voltage';...
     'PV1 Voltage';'PV2 Voltage';'Battery Voltage';...
@@ -29,9 +29,13 @@ includedValues = ones(30,1);
 % files).
 
 [FileName,PathName] = uigetfile(fileType,'Select the logfile to plot.');
-fileName = strcat(PathName,FileName) % making note of the filename including path
+fileName = strcat(PathName,FileName); % making note of the filename including path
 
-logData = csvread(fileName); % Reading the csv file
+logData = csvread(fileName); % reading the csv file
+
+timeName = strcat(fileName(1:end-3),'time'); % getting the matching time log
+
+timeData = csvread(timeName); % reading the time log
 
 % Creating the checkbox figure (Need to add callback functions)
 

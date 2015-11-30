@@ -208,13 +208,14 @@ end
  
  binaryname = ['HouseKeepingPackets' DateString '.bat']  % file for storing hex values
  filename = ['HouseKeepingLog' DateString '.log'] % file for storing physical values
+ timename = ['HouseKeepingLog' DateString '.time'] % file for storing times 
  
  % Running the main loop
  
  StripChart('Initialize',gca,'Packets') % start up the StripChart library
  while(continuer)
     [binary,datum] = GetData(sObj); % read a new data set
-    ToLog(binary,datum,binaryname,filename); % log the read data
+    ToLog(binary,datum,binaryname,filename,timename); % log the read data
     for counterer = 21:30 % reduce accuracy of temperatures (Palo requested)
         datum{counterer} = ceil(datum{counterer}*10)/10;
     end
