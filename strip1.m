@@ -5,6 +5,8 @@ close all;
 clear all;
 delete(instrfindall); % needed to avoid locking up the serial port
 
+start = datevec(now); % for testing elapsed time
+
 % Version Check
 
 curver = version('-release');

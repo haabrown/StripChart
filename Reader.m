@@ -64,7 +64,7 @@ uiwait(gcf);    % wait until the continue button is pressed
 % Doing all of the plotting
 
 figure(1); % plotting the voltages
-hold on;
+hold all;
 legend1 = []; % the list of valid legend entries
 isPlotted = 0; % monitor variable for plot validity
 for i = 1:numberOfVoltages
@@ -88,7 +88,7 @@ else
 end
 
 figure(2); % plotting the currents
-hold on;
+hold all;
 legend2 = []; % the list of valid legend entries
 isPlotted = 0; % monitor variable for plot validity
 for i = numberOfVoltages+1:numberOfVoltages+numberOfCurrents
@@ -111,7 +111,7 @@ else
 end
 
 figure(3); % plotting the temperatures
-hold on;
+hold all;
 legend3 = []; % the list of valid legend entries
 isPlotted = 0; % monitor variable for plot validity
 for i = numberOfVoltages+numberOfCurrents+1:numberOfVoltages+numberOfCurrents+numberOfTemps

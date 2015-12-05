@@ -8,16 +8,16 @@ function [ binary, data ] = GetData(sObj)
     % containing the information we need to plot
     
     
-    binary = fread(sObj,128);
-    %binary = ones(128,1)*10; % Used for testing only. Does not read
+    binary = fread(sObj,146);
+    %binary = ones(146,1)*10; % Used for testing only. Does not read
     %serial.
-    voltages = [Volts(binary(44)),Volts(binary(45)),Volts(binary(46)),Volts(binary(50)),Volts(binary(51)),VoltsBatt(binary(61)),FG_VCell(binary(66)),VoltsCDH5(binary(42)),VoltsCDHB(binary(43)),Volts(binary(69)),Volts(binary(70))];
-    currents = [Curs(binary(47)),Curs(binary(48)),Curs(binary(49)),Curs(binary(52)),Curs(binary(53)),CursBatt(binary(62)),CursBatt(binary(63)),CursINMS(binary(71)),CursINMS(binary(72))];
-    inter1 = dec2hex(binary(54:55));
-    inter2 = dec2hex(binary(54:55));
+    voltages = [Volts(binary(48)),Volts(binary(49)),Volts(binary(50)),Volts(binary(54)),Volts(binary(55)),VoltsBatt(binary(65)),FG_VCell(binary(70)),VoltsCDH5(binary(46)),VoltsCDHB(binary(47)),Volts(binary(73)),Volts(binary(74))];
+    currents = [Curs(binary(51)),Curs(binary(52)),Curs(binary(53)),Curs(binary(56)),Curs(binary(57)),CursBatt(binary(66)),CursBatt(binary(67)),CursINMS(binary(75)),CursINMS(binary(76))];
+    inter1 = dec2hex(binary(58:59)); 
+    inter2 = dec2hex(binary(60:61));
     inter1 = strcat(inter1(1,:),inter1(2,:));
-    inter2 = strcat(inter2(1,:),inter2(2,:));
-    temps = [ThermBatt(hex2dec(inter1)),ThermBatt(hex2dec(inter2)),ThermSolar(binary(60)),ThermSolar(binary(58)),ThermSolar(binary(59)),TMP100(binary(64)),TMP100(binary(65)),TMP100(binary(41)),TMP100(binary(74)),INMSTrans(binary(73))];
+    inter2 = strcat(inter2(1,:),inter2(2,:)); % Need to update temps still
+    temps = [ThermBatt(hex2dec(inter1)),ThermBatt(hex2dec(inter2)),ThermSolar(binary(64)),ThermSolar(binary(62)),ThermSolar(binary(63)),TMP100(binary(68)),TMP100(binary(69)),TMP100(binary(45)),TMP100(binary(78)),INMSTrans(binary(77))];
     data = [voltages,currents,temps]';
    	data = num2cell(data);
 end
