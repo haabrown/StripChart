@@ -180,15 +180,11 @@ fopen(sObj); % open the formatted serial port
     'ColumnName',columnname, ...
     'Data',d,'Units','Normalized');
 pos = get(figure2,'Position');
-if strcmp(curver,'2014b') || strcmp(curver,'2015a') || strcmp(curver,'2015b')
-    t.Position = [0 t.Extent(4)/2 t.Extent(3) t.Extent(4)]; % position in the new system
-else
     % here is where we set the position in the old notation
-    setter = get(t,'Extent');
-    set(t,'Position',[0 setter(4)/2 setter(3) setter(4)]);
-end
+setter = get(t,'Extent');
+set(t,'Position',[0 (setter(4)/2)-(2*(setter(4)/length(labels))) setter(3) setter(4)]);
  
- figure(figure1); % pass focus back to the main strip charts for now
+figure(figure1); % pass focus back to the main strip charts for now
  
  % Setting up for the loop
  
