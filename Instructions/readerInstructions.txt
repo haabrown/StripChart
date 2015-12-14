@@ -1,0 +1,5 @@
+1)	Open the file Reader.m in MATLAB.
+2)	Click run.
+3)	Select the logfile you wish to read and plot.
+4)	Uncheck the boxes for any values you do not with to plot.
+5)	Click the Continue button at the bottom of the checkbox window.
