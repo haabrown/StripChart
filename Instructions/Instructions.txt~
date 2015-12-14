@@ -1,0 +1,10 @@
+1)	Turn on MATLAB.
+2)	Navigate to the directory where you wish to save logfiles and make it the current folder - logfiles will be saved here.
+3)	Ensure that QB50.ini has been set to your specifications.
+4)	Select strip1.m and run it. Allow 1 second of startup time between program start and first packet transmission.
+5)	When you are ready to end the strip chart run, select Stop on the plot button located at the bottom center of the strip chart.
+	Do not use control-c or close the window to stop the run, as these methods
+	may fail to stop the program or may cause the logfile to develop issues.
+6)	The final portion of the strip chart will be left up, additionally the
+	raw hex values will be saved in a .bat file, while the physical value
+	readings are stored in a .log file. 

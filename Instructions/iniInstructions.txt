@@ -1,0 +1,55 @@
+This is a simple guide to setting up the .ini file located at QB50.ini.
+We will first walk through the .ini file contents, and then a demo version
+will be provided (in case you break it and want to go back to the default).
+
+-------------------------------------------------------------------------------
+About
+-------------------------------------------------------------------------------
+
+VMax/VMin - 	Set the maximum and minimum expected voltages from the packet. 
+				Note that all read out voltages share the same limit, so the
+				max and min should be selected by whichever systems have the
+				highest maximum and lowest minimum expected voltages. Note
+				also that VMax must be greater then VMin or the program will
+				not run properly.
+
+AMax/AMin - 	Set the maximum and minimum expected currents from the packet. 
+				Note that all read out currents share the same limit, so the
+				max and min should be selected by whichever systems have the
+				highest maximum and lowest minimum expected currents. Note
+				also that AMax must be greater then AMin or the program will
+				not run properly.
+
+TMax/TMin - 	Set the maximum and minimum expected temperatures from the 
+				packet. Note that all read out temperatures share the same
+				limit, so the max and min should be selected by whichever 
+				systems have the highest maximum and lowest minimum expected 
+				temperatures. Note also that TMax must be greater then TMin 
+				or the program will not run properly.
+
+PacketTime -	The approximate number of seconds between packets. Need not
+				be exact.
+
+MaxPackets -	The number of packets to be displayed at one time on the screen. 
+				For example, 1000 would mean that no more then 1000 packets
+				would be plotted at any one time, with each new packet pushing 
+				the oldest packet off the screen.
+
+BaudRate -		Sets the baud rate that the packets are arriving at.
+
+ProvidedPort -	The serial port that the packets will be arriving over.
+
+-------------------------------------------------------------------------------
+Example .ini File
+-------------------------------------------------------------------------------
+
+VMax 16
+VMin 0
+AMax 5
+AMin 0
+TMax 260
+TMin -170
+PacketTime 5
+MaxPackets 1000
+BaudRate 115200
+ProvidedPort 12
